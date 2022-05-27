@@ -1,18 +1,20 @@
 function deretKaskus(n){
-   var hasil=1;
+   var hasilA=1;
+   var hasil=[]
        for(var i = 1; i <= n; i++) {
             let tiga= i*3
-            console.log(tiga)
-            if (tiga%5==0) {
-               console.log('kas');
-               ;
+            
+            if(tiga%5 ==0 &&tiga%6 ==0){
+               hasil.push('kaskus')
+            }  else if (tiga%5==0) {
+               hasil.push('kas');
             } else if (tiga%6==0){
-               console.log('kus')
-            } else if(tiga%5&&6){
-               console.log('kaskus')
-            } else{
+               hasil.push('kus')
+            } else {
+               hasil.push(tiga)
+
             }
        }
-       return ;
+       return hasil;
    }
 console.log(deretKaskus(10))
