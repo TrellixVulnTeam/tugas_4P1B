@@ -1,26 +1,26 @@
 function indexPrime(param1) {
 
-   function IndexPrimer2(param2) {
-      if (param2 < 2) {
+   function IndexPrimer2(hasil) {
+      if (hasil < 2) {
          return false;
       } else {
-         for (let i = 2; i < param2; i++) {
-            if (param2 % i == 0) {
+         for (let i = 2; i < hasil; i++) {
+            if (hasil % i == 0) {
                return false;
             }
          }
          return true;
       }
    }
-   let prima = [];
-   let angka = 2;
-   while (prima.length < param1) {
-      if (IndexPrimer2(angka)) {
-         prima.push(angka)
+   let param2 = [];
+   let number = 2;
+   while (param2.length < param1) {
+      if (IndexPrimer2(number)) {
+         param2.push(number)
       }
-      angka++
+      number++
    }
-   return prima[prima.length - 1];
+   return param2[param2.length - 1];
 }
 
 console.log(indexPrime(4)) //result => 7
