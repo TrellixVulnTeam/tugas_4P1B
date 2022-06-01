@@ -8,10 +8,10 @@ function sentenceManipulation(sentence) {
     console.log(hasil.join(' '));
     function stringManipulation(word) {
 
-        if (word.charAt(0) == 'a'||
-            word.charAt(0) == 'i'||
-            word.charAt(0) == 'u'||
-            word.charAt(0) == 'e'||
+        if (word.charAt(0) == 'a' ||
+            word.charAt(0) == 'i' ||
+            word.charAt(0) == 'u' ||
+            word.charAt(0) == 'e' ||
             word.charAt(0) == 'o') {
             return word;
         } else {
