@@ -1,6 +1,8 @@
-if (process.argv[2] == 'data.json') {
-    const process = require('process')
-    console.log(process.argv)
+    if (!process.argv[2]) {
+            console.log('tolong sertakan nama file untuk inputan soalnya')
+    }
+    // const process = require('process')
+    // console.log(process.argv)
     console.log('selamat datang di permainan tebak kata, silah kan isi dengan jawaban benar yah!')
     const fs = require('fs')
     const readline = require('readline');
@@ -9,7 +11,7 @@ if (process.argv[2] == 'data.json') {
         output: process.stdout,
         prompt: 'jawaban: '
     });
-    const bacaData = fs.readFileSync('data.json', 'utf-8')
+    const bacaData = fs.readFileSync(process.argv[2], 'utf8')
     var isiData = JSON.parse(bacaData)
     var patokan = isiData
     // console.log(isiData)
@@ -55,6 +57,3 @@ if (process.argv[2] == 'data.json') {
         }
     }
     )
-} else {
-    console.log('tolong sertakan nama file untuk inputan soalnya')
-}
