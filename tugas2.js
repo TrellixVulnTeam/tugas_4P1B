@@ -1,5 +1,5 @@
 function deretKaskus(n){
-   var hasilA=1;
+   // var hasilA=1;
    var hasil=[]
        for(var i = 1; i <= n; i++) {
             let tiga= i*3

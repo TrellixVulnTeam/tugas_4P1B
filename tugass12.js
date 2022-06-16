@@ -6,11 +6,11 @@
     console.log('selamat datang di permainan tebak kata, silah kan isi dengan jawaban benar yah!')
     const fs = require('fs')
     const readline = require('readline');
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout,
-        prompt: 'jawaban: '
-    });
+    // const rl = readline.createInterface({
+    //     input: process.stdin,
+    //     output: process.stdout,
+    //     prompt: 'jawaban: '
+    // });
     const bacaData = fs.readFileSync(process.argv[2], 'utf8')
     var isiData = JSON.parse(bacaData)
     var patokan = isiData

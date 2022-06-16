@@ -4,7 +4,7 @@ function indexPrime(param1) {
       if (hasil < 2) {
          return false;
       } else {
-         for (let i = 2; i < hasil; i++) {
+         for (let i = 2; i <= Math.sqrt(hasil); i++) {
             if (hasil % i == 0) {
                return false;
             }
