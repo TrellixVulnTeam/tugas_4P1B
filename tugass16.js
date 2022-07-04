@@ -10,9 +10,9 @@ class Car {
 }
 
 class Trye {
-    constructor(trye, brandTrye) {
-        this.sizeTrye = trye;
-        this.brandTryes = brandTrye;
+    constructor(sizeTrye, brandTrye) {
+        this.sizeTrye = sizeTrye;
+        this.brandTrye = brandTrye;
     }
 }
 

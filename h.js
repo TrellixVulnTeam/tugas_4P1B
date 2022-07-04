@@ -26,7 +26,6 @@ function spiral(n) {
        if(startNum === (n*n)) {
           return; // exit if number matches to the size of the matrix. ( 16 = 4*4 )
        }
-    
        // down
        for(var i=(rowNum+1); i < (n-(rowNum+1)); i++) {
          startNum++; 

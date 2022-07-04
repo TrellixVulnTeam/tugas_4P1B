@@ -22,12 +22,20 @@ CREATE TABLE dosen(
     namaDosen varchar(50) NOT NULL
 );
 
+CREATE TABLE user(
+    userName VARCHAR(50) NOT NULL,
+    password VARCHAR(50) NOT NULL,
+    role varchar(20)NOT NULL
+)
+
 CREATE TABLE kontrak(
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
     nilai varchar(50)NULL,
     nim varchar(10) NOT NULL,
     kodeMk varchar(4) NOT NULL,
     nip varchar(6) NOT NULL,
+    id INT NOT  NULL,
+    FOREIGN KEY (id) REFERENCES username (id),
     FOREIGN KEY (nim) REFERENCES mahasiswa (nim),
     FOREIGN KEY (kodeMk) REFERENCES matauliah (kodeMk),
     FOREIGN KEY (nip) REFERENCES dosen (nip)
@@ -39,6 +47,9 @@ INSERT INTO jurusan VALUES ('2138', 'arsitektur');
 INSERT INTO jurusan VALUES ('2139', 'sastra dan bahasa');
 INSERT INTO jurusan VALUES ('2140', 'kimia');
 INSERT INTO jurusan VALUES ('2141', 'teknik sipil');
+
+INSERT INTO user VALUES ('Rahmat28','rahmat2822','user');
+
 
 INSERT INTO mahasiswa VALUES ('2002182028','Nur Cahyani','Antang,Makasaar','2136');
 INSERT INTO mahasiswa VALUES ('2002182029','Nardi','lassang,Takalar','2137');
