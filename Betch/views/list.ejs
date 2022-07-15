@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>list</title>
+</head>
+
+<body>
+    <table style="width: 100%;" border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>String</th>
+                <th>Integer</th>
+                <th>Float</th>
+                <th>Date</th>
+                <th>Boolean</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% rows.forEach((item, index)=> { %>
+                <tr>
+                    <td>
+                        <%=index + 1 %>
+                    </td>
+                    <td>
+                        <%=item.String %>
+                    </td>
+                    <td>
+                        <%=item.Integer %>
+                    </td>
+                    <td>
+                        <%= item.Float %>
+                    </td>
+                    <td>
+                        <%= item.Date %>
+                    </td>
+                    <td>
+                        <%= item.Boolean %>
+                    </td>
+                </tr>
+                <% }) %>
+        </tbody>
+    </table>
+    <a href="/add">add</a>
+</body>
+
+</html>

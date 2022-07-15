@@ -1,0 +1,10 @@
+[
+    {
+        "ID": 1,
+        "String": "nama",
+        "Integer": "25",
+        "Float": "189",
+        "Date": "2004-12-29",
+        "Boolean": "true"
+    }
+]
