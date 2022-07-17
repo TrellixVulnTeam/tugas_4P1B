@@ -2,14 +2,90 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>list</title>
+
+    <style>
+        #customers {
+            font-family: Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        #customers td,
+        #customers th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #customers tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #customers tr:hover {
+            background-color: #ddd;
+        }
+
+        #customers th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #423d3d;
+            color: white;
+        }
+
+        .atas {
+            color: rgb(0, 0, 0);
+            font-size: 18px;
+            float: left;
+            padding-left: 10px;
+            padding-right: 10px;
+            border: 1px solid rgb(77, 77, 77);
+            border-radius: 9px;
+            background: rgb(218, 213, 213);
+        }
+
+        a {
+            color: rgb(0, 0, 0);
+            font-size: 14px;
+            float: middle;
+            padding-left: 10px;
+            padding-right: 10px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border: 1px solid rgb(0, 0, 0);
+            border-radius: 9px;
+            background: rgb(1, 206, 35);
+        }
+
+        .button {
+            color: rgb(0, 0, 0);
+            font-size: 14px;
+            float: middle;
+            padding-left: 10px;
+            padding-right: 10px;
+            border: 1px solid rgb(0, 0, 0);
+            border-radius: 9px;
+            background: rgb(206, 1, 1);
+        }
+
+        a:link {
+            text-decoration: none;
+        }
+
+        a:visited {
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: none;
+        }
+    </style>
+    </style>
+
 </head>
 
 <body>
-    <table style="width: 100%;" border="1">
+    <table id="customers">
         <thead>
             <tr>
                 <th>ID</th>
@@ -18,19 +94,20 @@
                 <th>Float</th>
                 <th>Date</th>
                 <th>Boolean</th>
+                <th>Update</th>
             </tr>
         </thead>
         <tbody>
             <% rows.forEach((item, index)=> { %>
                 <tr>
                     <td>
-                        <%=index + 1 %>
+                        <%= index + 1 %>
                     </td>
                     <td>
-                        <%=item.String %>
+                        <%= item.String %>
                     </td>
                     <td>
-                        <%=item.Integer %>
+                        <%= item.Integer %>
                     </td>
                     <td>
                         <%= item.Float %>
@@ -41,11 +118,18 @@
                     <td>
                         <%= item.Boolean %>
                     </td>
+                    <td>
+                        <a href="/edit/<%= index %>">Edit</a>
+                        <a class="button" href="/delete/<%= index %>">Delete</a>
+                    </td>
                 </tr>
                 <% }) %>
         </tbody>
     </table>
-    <a href="/add">add</a>
+
+    <br>
+    <a class="atas" href="/add">+</a>
+
 </body>
 
 </html>

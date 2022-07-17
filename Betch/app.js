@@ -1,11 +1,9 @@
 const express = require('express');
 const path = require('path')
-const data = []
 const bodyParser = require('body-parser')
 const fs = require('fs')
 
-let rawdata = fs.readFileSync('student.json');
-let student = JSON.parse(rawdata);
+let rawdata = JSON.parse(fs.readFileSync("table.json", "utf8"));
 
 const app = express()
 const port = 3000
@@ -21,7 +19,7 @@ app.use(bodyParser.json())
 
 
 app.get('/', (req, res) => {
-    res.render('list', { rows: data })
+    res.render('list', { rows: rawdata })
 })
 
 app.get('/add', (req, res) => {
@@ -29,14 +27,27 @@ app.get('/add', (req, res) => {
 })
 
 app.post('/add', (req, res) => {
-    data.push({
-        String: req.body.String,
-        Integer: req.body.Integer,
-        Float: req.body.Float,
-        Date: req.body.Date,
-        Boolean: req.body.Boolean
+    rawdata.push({
+        "String": req.body.String,
+        "Integer": req.body.Integer,
+        "Float": req.body.Float,
+        "Date": req.body.Date,
+        "Boolean": req.body.Boolean,
     })
-    console.log(data)
+
+    fs.writeFileSync("table.json", JSON.stringify(rawdata, null, 4))
+    console.log(rawdata)
+
+    res.redirect('/')
+})
+
+app.get('/edit/:id', (req, res) => {
+    res.render('/edit',{item : rawdata[req.params.id]})
+})
+
+app.get('/delete/:id', (req, res) => {
+    const index = req.params.id
+    rawdata.splice(index, 1)
     res.redirect('/')
 })
 
