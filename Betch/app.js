@@ -32,22 +32,37 @@ app.post('/add', (req, res) => {
         "Integer": req.body.Integer,
         "Float": req.body.Float,
         "Date": req.body.Date,
-        "Boolean": req.body.Boolean,
+        "Boolean": req.body.Boolean
     })
 
     fs.writeFileSync("table.json", JSON.stringify(rawdata, null, 4))
-    console.log(rawdata)
-
     res.redirect('/')
 })
 
 app.get('/edit/:id', (req, res) => {
-    res.render('/edit',{item : rawdata[req.params.id]})
+    res.render('edit', { item: rawdata[req.params.id] })
 })
+
+app.post('/edit/:id', (req, res) => {
+    
+    rawdata[req.params.id] = {
+        "String": req.body.String,
+        "Integer": req.body.Integer,
+        "Float": req.body.Float,
+        "Date": req.body.Date,
+        "Boolean": req.body.Boolean
+    }
+    fs.writeFileSync("table.json", JSON.stringify(rawdata, null, 4))
+    res.redirect('/')
+})
+
+
+
 
 app.get('/delete/:id', (req, res) => {
     const index = req.params.id
     rawdata.splice(index, 1)
+    fs.writeFileSync("table.json", JSON.stringify(rawdata, null, 4))
     res.redirect('/')
 })
 

@@ -1,8 +1,16 @@
 [
     {
-        "String": "",
-        "Integer": "",
-        "Float": "",
-        "Date": ""
+        "String": "rahmat",
+        "Integer": "20",
+        "Float": "170",
+        "Date": "2022-05-04",
+        "Boolean": "True"
+    },
+    {
+        "String": "rahmat fajar",
+        "Integer": "25",
+        "Float": "180",
+        "Date": "2002-02-28",
+        "Boolean": "True"
     }
 ]

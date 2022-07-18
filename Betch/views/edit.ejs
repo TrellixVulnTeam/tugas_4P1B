@@ -5,7 +5,7 @@
     <title>Fiture Add</title>
     <style>
         legend {
-            font-style:italic;
+            font-style: italic;
         }
 
         .form-style-3 {
@@ -94,28 +94,31 @@
 
         <form action="" method="post">
             <fieldset>
-                <legend>FIture ADD</legend>
-                String : <input type="text" size="30" name="String" placeholder="masukkan String" value="<%= item.String%>">
+                <legend>FIture EDIT</legend>
+                String : <input type="text" size="30" name="String" value="<%= item.String%>"
+                    placeholder="masukkan String">
                 <br>
-                Integer : <input type="number" size="30" name="Integer" placeholder="masukkan Integer" value="<%= item.Integer%>">
+                Integer : <input type="number" size="30" value="<%= item.Integer%>" name="Integer"
+                    placeholder="masukkan Integer">
                 <br>
-                Float : <input type="number" size="30" name="Float" placeholder="masukkan Float" value="<%= item.Float%>">
+                Float : <input type="number" size="30" value="<%= item.Float%>" name="Float"
+                    placeholder="masukkan Float">
                 <br>
                 Date : <input type="date" size="30" id="Date" name="Date" value="<%= item.Date%>">
                 <br>
-                <label for="country" value="<%= item.Boolean%>">Boolean :</label>
-                <select id="country" name="country">
-                    <option value="australia">Lainnya</option>
-                    <option value="australia">True</option>
-                    <option value="canada">False</option>
+                <label for="Boolean">Boolean :</label>
+                <select id="Boolean" value="<%= item.Boolean%>" name="Boolean">
+                    <option value="Lainnya">Lainnya</option>
+                    <option value="True">True</option>
+                    <option value="False">False</option>
                 </select>
+                <br>
+                <br>
+                <input type="submit" class="submit" value="save" cols="30">
+                <a href="/">↰ Back</a>
             </fieldset>
         </form>
     </div>
-    <br>
-    <br>
-    <input type="submit" class="submit" value="save" cols="30">
-    <a href="/">↰ Back</a>
 </body>
 
 </html>
