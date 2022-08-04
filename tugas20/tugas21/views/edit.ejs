@@ -9,33 +9,41 @@
 <body>
     <div class="container">
         <% rows.forEach((item)=> { %>
-            <form action="" method="post">
-                <fieldset>
-                    <legend>FIture EDIT</legend>
-                    <input type="hidden" id="ID" name="ID" value="<%= item.ID %>">
-                    String : <input type="text" size="30" id="String" name="String" value="<%= item.String %>"
-                        placeholder="masukkan String">
-                    <br>
-                    Integer : <input type="number" size="30" id="Integers" name="Integers" value="<%= item.Integers %>"
-                        placeholder="masukkan Integer">
-                    <br>
-                    Float : <input type="number" step="any" size="30" id="Floats" name="Floats"
-                        value="<%= item.Floats %>" placeholder="masukkan Float">
-                    <br>
-                    Date : <input type="date" size="30" id="Dates" name="Dates" value="<%= item.Dates %>">
-                    <br>
-                    <label for="Boolean">Boolean :</label>
-                    <select id="Booleans" name="Booleans" value="<%= item.Booleans %>">
-                        <option value="Lainnya">Lainnya</option>
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                    </select>
-                    <br>
-                    <br>
-                    <input type="submit" class="submit" value="SAVE" cols="30">
-                    <a href="/">↰ Back</a>
-                </fieldset>
-            </form>
+            <div class="card">
+                <div class="card-header" style="background-color: rgb(11, 133, 255);">
+                    <h1 class="text-center">FIture EDIT</h1>
+                </div>
+                <form action="" method="post">
+                    <div class="card-body" style="background-color: rgb(5, 255, 226);">
+                        <div class="mb-3 row">
+                            <input type="hidden" id="ID" name="ID" value="<%= item.id %>">
+                            String : <input type="text" size="30" id="String" name="String" value="<%= item.string %>"
+                                placeholder="masukkan String">
+                        </div>
+                        <div class="mb-3 row">
+                            Integer : <input type="number" size="30" id="Integers" name="Integers"
+                                value="<%= item.integer %>" placeholder="masukkan Integer">
+                        </div>
+                        <div class="mb-3 row">
+                            Float : <input type="number" step="any" size="30" id="Floats" name="Floats"
+                                value="<%= item.float %>" placeholder="masukkan Float">
+                        </div>
+                        <div class="mb-3 row">
+                            Date : <input type="date" size="30" id="Dates" name="Dates" value="<%= item.date %>">
+                        </div>
+                        <div class="mb-3 row">
+                            <label for="Boolean">Boolean :</label>
+                            <select id="Booleans" name="Booleans" value="<%= item.boolean %>">
+                                <option value="Lainnya" disabled selected>Lainnya</option>
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                        <button class=" btn btn-primary" type="submit"> SAVE </button>
+                        <a class=" btn btn-primary" style="margin-left: 1100px;" href="/">↰ Back</a>
+                    </div>
+                </form>
+            </div>
             <% }) %>
     </div>
 </body>
