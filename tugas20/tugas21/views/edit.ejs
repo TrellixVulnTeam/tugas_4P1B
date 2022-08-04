@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <% rows.forEach((item)=> { %>
+            <form action="" method="post">
+                <fieldset>
+                    <legend>FIture EDIT</legend>
+                    <input type="hidden" id="ID" name="ID" value="<%= item.ID %>">
+                    String : <input type="text" size="30" id="String" name="String" value="<%= item.String %>"
+                        placeholder="masukkan String">
+                    <br>
+                    Integer : <input type="number" size="30" id="Integers" name="Integers" value="<%= item.Integers %>"
+                        placeholder="masukkan Integer">
+                    <br>
+                    Float : <input type="number" step="any" size="30" id="Floats" name="Floats"
+                        value="<%= item.Floats %>" placeholder="masukkan Float">
+                    <br>
+                    Date : <input type="date" size="30" id="Dates" name="Dates" value="<%= item.Dates %>">
+                    <br>
+                    <label for="Boolean">Boolean :</label>
+                    <select id="Booleans" name="Booleans" value="<%= item.Booleans %>">
+                        <option value="Lainnya">Lainnya</option>
+                        <option value="true">True</option>
+                        <option value="false">False</option>
+                    </select>
+                    <br>
+                    <br>
+                    <input type="submit" class="submit" value="SAVE" cols="30">
+                    <a href="/">↰ Back</a>
+                </fieldset>
+            </form>
+            <% }) %>
+    </div>
+</body>
+
+</html>
