@@ -4,19 +4,23 @@ var router = express.Router();
 
 module.exports = function (db) {
 
-
     router.get('/', (req, res) => {
 
         // const {StringC} = req.query
 
-        const url = req.url == '/' ? '/?page=1' : req.url
+
+        const sortBy =  req.query.sortBy || 'id'
+        const sortMode = req.query.sortMode || 'asc'
+console.log('test',req.query.sortMode)
+
+        const url = req.url == '/' ? '/?page=1&sortBy=id&sortMode=asc' : req.url
 
         const page = req.query.page || 1
         const limit = 2
         const offset = (page - 1) * limit
         const wheres = []
         const value = []
-        let count = 1
+        let count = 1 
 
 
         if (req.query.ID && req.query.ids == 'on') {
@@ -26,7 +30,7 @@ module.exports = function (db) {
         }
 
         if (req.query.String && req.query.strng == 'on') {
-            wheres.push(`string ILIKE $${count} `)
+            wheres.push(`string ILIKE '%' || $${count} || '%'`)
             count++
             value.push(req.query.String)
         }
@@ -73,7 +77,16 @@ module.exports = function (db) {
                 sql += ` WHERE ${wheres.join(' and ')}`
             }
 
+console.log(sortMode)
+            //sorting
+            sql += ` ORDER BY ${sortBy} ${sortMode}`
+
+
+
+
             sql += ` LIMIT $${count} OFFSET $${count + 1}`
+
+            console.log(sql)
 
             db.query(sql, [...value, limit, offset], (err, data) => {
                 if (err) {
