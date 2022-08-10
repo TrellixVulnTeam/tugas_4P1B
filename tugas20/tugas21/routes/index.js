@@ -9,9 +9,9 @@ module.exports = function (db) {
         // const {StringC} = req.query
 
 
-        const sortBy =  req.query.sortBy || 'id'
+        const sortBy = req.query.sortBy || 'id'
         const sortMode = req.query.sortMode || 'asc'
-console.log('test',req.query.sortMode)
+        // console.log('test',req.query.sortMode)
 
         const url = req.url == '/' ? '/?page=1&sortBy=id&sortMode=asc' : req.url
 
@@ -20,7 +20,7 @@ console.log('test',req.query.sortMode)
         const offset = (page - 1) * limit
         const wheres = []
         const value = []
-        let count = 1 
+        let count = 1
 
 
         if (req.query.ID && req.query.ids == 'on') {
@@ -77,7 +77,7 @@ console.log('test',req.query.sortMode)
                 sql += ` WHERE ${wheres.join(' and ')}`
             }
 
-console.log(sortMode)
+            // console.log(sortMode)
             //sorting
             sql += ` ORDER BY ${sortBy} ${sortMode}`
 
@@ -86,7 +86,7 @@ console.log(sortMode)
 
             sql += ` LIMIT $${count} OFFSET $${count + 1}`
 
-            console.log(sql)
+            // console.log(sql)
 
             db.query(sql, [...value, limit, offset], (err, data) => {
                 if (err) {
@@ -99,8 +99,8 @@ console.log(sortMode)
     })
 
     router.get('/add', (req, res) => {
-        db.query('select * from challange' ,(err, rows) => {
-            res.render('add', {rows})
+        db.query('select * from challange', (err, rows) => {
+            res.render('add', { rows })
         })
     })
 
