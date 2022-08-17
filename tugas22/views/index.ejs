@@ -8,6 +8,7 @@
   <link rel='stylesheet' href='/stylesheets/style.css' />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="/font/css/all.css" rel="stylesheet">
 </head>
 
 <body>
@@ -20,14 +21,6 @@
       <form action="">
         <input type="hidden" name="page" value="1">
         <div class="card-body mb-3">
-          <div class="mb-3 row">
-            <label for="id" class="col-sm-2 col-form-label">
-              <input type="checkbox" name="ids" id="ids" class="col-sm-2">ID</label>
-            <div class="col-sm-10">
-              <input type="number" class="form-control" name="id" id="id" value="<%=req.query.id%>"
-                placeholder="masukkan ID">
-            </div>
-          </div>
           <div class="mb-3 row">
             <label for="string" class="col-sm-2 col-form-label">
               <input type="checkbox" name="strng" id="strng" class="col-sm-2">STRING</label>
@@ -54,7 +47,7 @@
           </div>
           <div class="mb-3 row">
             <label for="date" class="col-sm-2 col-form-label">
-              <input type="checkbox" name="dt" id="dt" class="col-sm-2">DATE</label>
+              <input type="checkbox" name="date" id="date" class="col-sm-2">DATE</label>
             <div class="col-sm-10">
               <input class="form-select" type="date" id="Start_Dates" name="Start_Dates"
                 value="<%=req.query.Start_Dates%>"> to
@@ -66,7 +59,7 @@
             <label for="Boolean" class="col-sm-2 col-form-label">
               <input type="checkbox" name="blo" id="blo" class="col-sm-2">BOOLEAN</label>
             <div class="col-sm-10">
-              <select class="form-select" id="Booleans" name="Booleans" value="<%=req.query.Booleans%>">
+              <select class="form-select" id="Booleans" name="Booleans" value="<%=req.query.boolean%>">
                 <option value="" disabled selected>Lainnya</option>
                 <option value="true">True</option>
                 <option value="false">False</option>
@@ -83,20 +76,57 @@
       style="background-image: url('https://cdn.pixabay.com/photo/2019/09/03/08/11/sunset-4448918_960_720.jpg')">
       <thead>
         <tr>
+          
           <th>ID</th>
-          <th>String</th>
-          <th>Integer</th>
-          <th>Float</th>
-          <th>Date</th>
+
+
+          <th>
+            <a
+              href="<%= url.replace(`sortBy=${req.query.sortBy}`, 'sortBy=string').replace(`sortMode=${req.query.sortMode}`, `sortMode=${req.query.sortMode == 'asc' ? 'desc' : 'asc' }`) %>">
+              <i
+                class="fa-solid fa-<%= req.query.sortBy == 'string' ? req.query.sortMode == 'asc' ? 'sort-up' : 'sort-down' : 'sort' %>"></i>
+              String
+          </th></a>
+
+
+          <th>
+            <a
+              href="<%= url.replace(`sortBy=${req.query.sortBy}`, 'sortBy=integer').replace(`sortMode=${req.query.sortMode}`, `sortMode=${req.query.sortMode == 'asc' ? 'desc' : 'asc' }`) %>">
+              <i
+                class="fa-solid fa-<%= req.query.sortBy == 'integer' ? req.query.sortMode == 'asc' ? 'sort-up' : 'sort-down' : 'sort' %>"></i>
+              Integer
+          </th></a>
+
+
+          <th>
+            <a
+              href="<%= url.replace(`sortBy=${req.query.sortBy}`, 'sortBy=float').replace(`sortMode=${req.query.sortMode}`, `sortMode=${req.query.sortMode == 'asc' ? 'desc' : 'asc' }`) %>">
+              <i
+                class="fa-solid fa-<%= req.query.sortBy == 'float' ? req.query.sortMode == 'asc' ? 'sort-up' : 'sort-down' : 'sort' %>"></i>
+              Float
+          </th></a>
+
+
+          <th>
+            <a
+              href="<%= url.replace(`sortBy=${req.query.sortBy}`, 'sortBy=date').replace(`sortMode=${req.query.sortMode}`, `sortMode=${req.query.sortMode == 'asc' ? 'desc' : 'asc' }`) %>">
+              <i
+                class="fa-solid fa-<%= req.query.sortBy == 'date' ? req.query.sortMode == 'asc' ? 'sort-up' : 'sort-down' : 'sort' %>"></i>
+              Date
+          </th></a>
+
+
           <th>Boolean</th>
-          <th>Action</th>
+
+
+          <th>Update</th>
         </tr>
       </thead>
       <tbody>
         <% findResult.forEach ((item, index)=> { %>
           <tr>
             <td>
-              <%= index + 1 %>
+              <%= index + 1 + offset %>
             </td>
             <td>
               <%= item.string %>
@@ -108,7 +138,7 @@
               <%= item.float %>
             </td>
             <td>
-              <%= item.date %>
+              <%= moment(item.date).format("MMM Do YY") %>
             </td>
             <td>
               <%= item.boolean %>
@@ -121,6 +151,16 @@
           <% }) %>
       </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <% for(let i=1 ; i <= pages; i++) { %>
+          <li class="page-item <%= page == i ? 'active' : '' %>"><a class="page-link"
+              href="<%= url.replace(`page=${page}`, `page=${i}`)%>" class="w3-button">
+              <%= i %>
+            </a></li>
+          <% } %>
+      </ul>
+    </nav>
     <a class="col-sm-2 btn btn-primary" href="/add">TAMBAH</a>
   </div>
 </body>

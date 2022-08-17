@@ -1,73 +1,104 @@
 const { ObjectID } = require('bson');
 var express = require('express');
 var router = express.Router();
+var moment = require('moment')
 
 module.exports = function (db) {
   const collection = db.collection('tugas');
   router.get('/', async function (req, res, next) {
 
     // search
-    const sortBy = req.query.sortBy || 'id'
-    const sortMode = req.query.sortMode || 'asc'
-    // console.log('test',req.query.sortMode)
 
     const url = req.url == '/' ? '/?page=1&sortBy=id&sortMode=asc' : req.url
 
     const page = req.query.page || 1
     const limit = 2
     const offset = (page - 1) * limit
-    const wheres = []
-    const value = []
-    let count = 1
+    const value = {}
+    let sortBy = {}
 
 
-    if (req.query.id && req.query.ids == 'on') {
-      wheres.push(`id = $${count}`)
-      count++
-      value.push(req.query.id)
+    if(req.query.sortBy == 'string'){
+      if(req.query.sortMode == 'asc'){
+        sortBy = {}
+        sortBy['string'] = 1
+      } 
+      else {
+        sortBy = {}
+        sortBy['string'] = -1
+      }
     }
 
     if (req.query.string && req.query.strng == 'on') {
-      wheres.push(`string ILIKE '%' || $${count} || '%'`)
-      count++
-      value.push(req.query.string)
+      value['string'] = new RegExp(`${req.query.string}`, 'i');
+    }
+
+    if(req.query.sortBy == 'integer'){
+      if(req.query.sortMode == 'asc'){
+        sortBy = {}
+        sortBy['integer'] = 1
+      } 
+      else {
+        sortBy = {}
+        sortBy['integer'] = -1
+      }
     }
 
     if (req.query.integer && req.query.int == 'on') {
-      wheres.push(`integer = $${count}`)
-      count++
-      value.push(req.query.integer)
+      value['integer'] = parseInt(req.query.integer)
+      // console.log(value, typeof value.integer)
+    }
+
+    if(req.query.sortBy == 'float'){
+      if(req.query.sortMode == 'asc'){
+        sortBy = {}
+        sortBy['float'] = 1
+      } 
+      else {
+        sortBy = {}
+        sortBy['float'] = -1
+      }
     }
 
     if (req.query.float && req.query.flo == 'on') {
-      wheres.push(`float = $${count}`)
-      count++
-      value.push(req.query.float)
+      value['float'] = parseFloat(req.query.float)
+    }
+
+    if(req.query.sortBy == 'date'){
+      if(req.query.sortMode == 'asc'){
+        sortBy = {}
+        sortBy['date'] = 1
+      } 
+      else {
+        sortBy = {}
+        sortBy['date'] = -1
+      }
     }
 
     if (req.query.date == 'on') {
       if (req.query.Start_Dates && req.query.End_Dates) {
-        wheres.push(`date between $${count} and $${count + 1}`)
-        count++
-        count++
-        value.push(req.query.Start_Dates)
-        value.push(req.query.End_Dates)
+        value['date'] = {
+          $gte: new Date(req.query.Start_Dates),
+          $lt: new Date(req.query.End_Dates)
+        }
       }
     }
+
     if (req.query.boolean && req.query.blo == 'on') {
-      wheres.push(`boolean = $${count}`)
-      count++
-      value.push(req.query.boolean)
+      value['boolean'] = JSON.parse(req.query.boolean)
     }
 
 
-
+    
 
     try {
+      const pageResult = await collection.find({}).toArray();
+      const pages = Math.ceil(pageResult.length / limit)
       // res.status(200).json(findResult)
-      const findResult = await collection.find({}).toArray();
-      res.render('index', { title: 'Express', findResult, req });
+      const findResult = await collection.find(value).collation({ locale: "en" }).sort(sortBy).limit(limit).skip(offset).toArray();
+      res.render('index', { title: 'Express', findResult, req, page, pages, url, offset, moment });
     } catch (e) {
+      console.log(e)
       res.json(e)
     }
   });
@@ -83,7 +114,13 @@ module.exports = function (db) {
   router.post('/add', async function (req, res) {
     try {
       collection.insertOne(
-        { string: req.body.string, integer: req.body.integer, float: req.body.float, date: req.body.date, boolean: req.body.boolean }
+        {
+          string: req.body.string,
+          integer: parseInt(req.body.integer),
+          float: parseFloat(req.body.float),
+          date: new Date(req.body.date),
+          boolean: JSON.parse(req.body.boolean)
+        }
       )
       res.redirect('/')
     } catch (e) {
@@ -106,8 +143,9 @@ module.exports = function (db) {
     try {
       // res.status(200).json(findResult)
       const findResult = await collection.find({ _id: new ObjectID(`${req.params.id}`) }).toArray()
-      res.render('edit', { title: 'Express', findResult })
+      res.render('edit', { title: 'Express', findResult, moment })
     } catch (e) {
+      console.log(e)
       res.json(e)
     }
   })
@@ -116,7 +154,7 @@ module.exports = function (db) {
     try {
       console.log(req.body)
       const updateResult = await collection.updateOne({ _id: new ObjectID(`${req.params.id}`) }, {
-        $set: { integer: req.body.integer, float: req.body.float, date: req.body.date, boolean: req.body.boolean }
+        $set: { string: req.body.string, integer: req.body.integer, float: req.body.float, date: req.body.date, boolean: req.body.boolean }
       });
       console.log('Updated documents =>', updateResult);
       res.redirect('/')
