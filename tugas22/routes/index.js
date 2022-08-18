@@ -92,8 +92,9 @@ module.exports = function (db) {
     
 
     try {
-      const pageResult = await collection.find({}).toArray();
-      const pages = Math.ceil(pageResult.length / limit)
+      const pageResult = await collection.countDocuments(value);
+      console.log(pageResult)
+      const pages = Math.ceil(pageResult / limit)
       // res.status(200).json(findResult)
       const findResult = await collection.find(value).collation({ locale: "en" }).sort(sortBy).limit(limit).skip(offset).toArray();
       res.render('index', { title: 'Express', findResult, req, page, pages, url, offset, moment });
