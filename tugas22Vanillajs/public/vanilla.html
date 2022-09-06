@@ -9,67 +9,15 @@
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <script src="https://momentjs.com/downloads/moment.js"></script>
     <title>Document</title>
-
-    <style>
-        .relative {
-            position: relative;
-            left: 80px;
-        }
-    </style>
 </head>
 
 <body>
-    <form id="search-user">
-        <div class="container">
-            <div class="card">
-                <div class="card-header">
-                    <h1>Daftar User</h1>
-                </div>
-                <div class="card-body" style="background-image: url(https://img.freepik.com/free-vector/elegant-white-background-with-shiny-lines_1017-17580.jpg?w=2000)">
-                    <div class="container">
-                        <form class="row g-3">
-                            <div class="col-md-10 relative">
-                                <label for="strings" class="form-label">Nama</label>
-                                <input type="text" class="form-control" id="strings" name="strings"
-                                    placeholder="Masukkan Nama Lengkap">
-                            </div>
-                            <div class="col-md-10 relative">
-                                <label for="integers" class="form-label">Berat Badan</label>
-                                <input type="number" class="form-control" id="integers" name="integers"
-                                    placeholder="Masukkan Berat Badan">
-                            </div>
-                            <hr>
-                            <div class="col-10 relative">
-                                <label for="s-float" class="form-label">Tinggi</label>
-                                <input type="number" class="form-control" id="s-float" step="any" name="s-float"
-                                    placeholder="Tinggi Bandan">
-                            </div>
-                            <div class="col-10 relative">
-                                <label for="s-date" class="form-label">Date</label>
-                                <input class="form-select" type="date" name="start-date" id="start-date">
-                                to
-                                <input class="form-select" type="date" name="end-date" id="end-date">
-                            </div>
-                            <hr>
-                            <div class="col-md-10 relative">
-                                <label for="s-boolean" class="form-label">Sudah Menikah</label>
-                                <select id="s-boolean" name="s-boolean" class="form-select">
-                                    <option value="" disabled selected>Pilihan...</option>
-                                    <option value="true">True</option>
-                                    <option value="false">False</option>
-                                </select>
-                            </div>
-                            <br>
-                            <hr>
-                            <div class="container">
-                                <button type="submit" class=" btn btn-primary col-md-1 btn-sm">Search</button>
-                                <input type="reset" class="btn btn-warning btn-sm" value="Reset">
-                            </div>
-                            <br>
-                            <br>
-                        </form>
-                    </div>
-                </div>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h1>Daftar User</h1>
+            </div>
+            <div class="card-body">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -87,8 +35,11 @@
                     </tbody>
                 </table>
             </div>
+            <div class="container">
+                <button type="button" class=" btn btn-warning">Search</button>
+            </div>
+            <br>
         </div>
-    </form>
     </div>
     <br>
     <hr>
@@ -100,7 +51,7 @@
                 <div class="card-header">
                     <h1>Form User</h1>
                 </div>
-                <div class="card-body" style="background-image: url(https://img.freepik.com/free-vector/elegant-white-background-with-shiny-lines_1017-17580.jpg?w=2000)">
+                <div class="card-body" style="background-image: url(https://wallpapercave.com/wp/9PaZMV2.jpg)">
                     <form class="row g-3">
                         <div class="col-md-12">
                             <label for="string" class="form-label">Nama</label>
@@ -120,9 +71,8 @@
                                 placeholder="Tinggi Bandan" required>
                         </div>
                         <hr>
-                        <div class="col-12">
-                            <label for="date" class="form-label">Date</label>
-                            <input class="form-select" type="date" id="date" name="date" required>
+                        <div>
+                            DATE<input class="form-select" type="date" id="date" name="date" required>
                         </div>
                         <hr>
                         <div class="col-md-2">
@@ -135,7 +85,8 @@
                         </div>
                         <br>
                         <hr>
-                        <div class="card-footer">
+                        <div class="card-footer"
+                            style="background-image: url(https://i.pinimg.com/originals/b0/c6/e9/b0c6e965d8db234056f74cc2fa510d52.jpg)">
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary btn-sm">Save</button>
                                 <input type="reset" class="btn btn-warning btn-sm" value="Reset">
@@ -149,9 +100,9 @@
 </body>
 
 <script>
-    const readData = (params) => {
-        console.log('kebaca', params)
-        fetch(`http://localhost:3000/users?${new URLSearchParams(params).toString()}`).then((response) => {
+    const readData = () => {
+        console.log('kebaca')
+        fetch("http://localhost:3000/users").then((response) => {
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }
@@ -182,7 +133,7 @@
         });
     }
     const saveData = (id, string, integer, float, date, boolean) => {
-        // console.log('ke save', string, integer, float, date, boolean)
+        console.log('ke save', id)
         if (id) {
             fetch(`http://localhost:3000/users/${id}`, {
 
@@ -191,7 +142,7 @@
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ string, integer, float, date, boolean })
+                body: JSON.stringify({  string, integer, float, date, boolean })
             }).then((response) => {
                 console.log('respon aja', response)
                 if (!response.ok) {
@@ -201,10 +152,9 @@
                 return response.json();
 
             }).then((data) => {
-                // console.log('keupdate', data)
+                console.log('keupdate', data)
                 readData()
                 document.getElementById("form-user").reset()
-                document.getElementById('id').value = ''
             }).catch(e => console.log(e))
         } else {
             fetch("http://localhost:3000/users", {
@@ -216,7 +166,7 @@
                 },
                 body: JSON.stringify({ string, integer, float, date, boolean })
             }).then((response) => {
-                console.log('respon aja', response)
+                // console.log('respon aja', response)
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
@@ -224,7 +174,6 @@
                 return response.json();
 
             }).then((data) => {
-                console.log('data masuk', data)
                 readData()
                 document.getElementById("form-user").reset()
             })
@@ -272,7 +221,7 @@
             // console.log('respon aja', response)
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
-                // console.log(response)
+                console.log(response)
             }
 
             return response.json();
@@ -296,20 +245,6 @@
         // console.log(string, integer, float, date, boolean)
         saveData(id, string, integer, float, date, boolean)
     })
-
-
-    document.getElementById('search-user').addEventListener('submit', function (event) {
-        event.preventDefault()
-        const string = document.getElementById('strings').value
-        const integer = document.getElementById('integers').value
-        const float = document.getElementById('s-float').value
-        const startDate = document.getElementById('start-date').value
-        const endDate = document.getElementById('end-date').value
-        const boolean = document.getElementById('s-boolean').value
-        console.log(string, integer, float, startDate, endDate)
-        readData({ string, integer, float, startDate, endDate, boolean })
-    })
-
 
 </script>
 

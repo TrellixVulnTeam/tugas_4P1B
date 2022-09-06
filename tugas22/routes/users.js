@@ -9,12 +9,14 @@ module.exports = function (db) {
 
     // search
 
+    // console.log(req.query)
+
     const url = req.url == '/' ? '/?page=1&sortBy=id&sortMode=asc' : req.url
 
     const page = req.query.page || 1
     const limit = 9
     const offset = (page - 1) * limit
-    const value = {}
+    const searchParams = {}
     let sortBy = {}
 
 
@@ -29,9 +31,6 @@ module.exports = function (db) {
       }
     }
 
-    if (req.query.string && req.query.strng == 'on') {
-      value['string'] = new RegExp(`${req.query.string}`, 'i');
-    }
 
     if (req.query.sortBy == 'integer') {
       if (req.query.sortMode == 'asc') {
@@ -42,11 +41,6 @@ module.exports = function (db) {
         sortBy = {}
         sortBy['integer'] = -1
       }
-    }
-
-    if (req.query.integer && req.query.int == 'on') {
-      value['integer'] = parseInt(req.query.integer)
-      // console.log(value, typeof value.integer)
     }
 
     if (req.query.sortBy == 'float') {
@@ -60,9 +54,6 @@ module.exports = function (db) {
       }
     }
 
-    if (req.query.float && req.query.flo == 'on') {
-      value['float'] = parseFloat(req.query.float)
-    }
 
     if (req.query.sortBy == 'date') {
       if (req.query.sortMode == 'asc') {
@@ -75,28 +66,50 @@ module.exports = function (db) {
       }
     }
 
-    if (req.query.date == 'on') {
-      if (req.query.Start_Dates && req.query.End_Dates) {
-        value['date'] = {
-          $gte: new Date(req.query.Start_Dates),
-          $lt: new Date(req.query.End_Dates)
-        }
+
+
+
+    if (req.query.string) {
+      const subject = new RegExp(`${req.query.string}`, 'i');
+      searchParams['string'] = subject
+    }
+
+    if (req.query.integer) {
+      searchParams['integer'] = parseInt(req.query.integer)
+    }
+
+    if (req.query.float) {
+      searchParams['float'] = parseFloat(req.query.float)
+    }
+
+    if (req.query.startDate && req.query.endDate) {
+      searchParams['date'] = {
+        $gte: new Date(req.query.startDate),
+        $lt: new Date(req.query.endDate)
+      }
+    } else if (req.query.startDate) {
+      searchParams['date'] = {
+        $gte: new Date(req.query.startDate)
+      }
+    } else if(req.query.endDate) {
+      searchParams['date'] = {
+        $lt: new Date(req.query.endDate)
       }
     }
 
-    if (req.query.boolean && req.query.blo == 'on') {
-      value['boolean'] = JSON.parse(req.query.boolean)
+    if (req.query.boolean) {
+      searchParams['boolean'] = JSON.parse(req.query.boolean)
     }
 
 
-
+    console.log(searchParams)
 
     try {
-      const pageResult = await collection.countDocuments(value);
+      const pageResult = await collection.countDocuments(searchParams);
       // console.log(pageResult)
       const pages = Math.ceil(pageResult / limit)
-      const findResult = await collection.find(value).collation({ locale: "en" }).sort(sortBy).limit(limit).skip(offset).toArray();
-      res.status(200).json(findResult)
+      const findResult = await collection.find(searchParams).collation({ locale: "en" }).sort(sortBy).limit(limit).skip(offset).toArray();
+      res.status(200).json(findResult, searchParams, req, page, pages)
     } catch (e) {
       console.log(e)
       res.json(e)
@@ -124,7 +137,7 @@ module.exports = function (db) {
     }
   });
 
- 
+
 
   router.delete('/:id', async function (req, res) {
     try {
@@ -156,7 +169,13 @@ module.exports = function (db) {
     try {
       // console.log(req.body)
       const updateResult = await collection.updateOne({ _id: new ObjectID(`${req.params.id}`) }, {
-        $set: { string: req.body.string, integer: req.body.integer, float: req.body.float, date: req.body.date, boolean: req.body.boolean }
+        $set: {
+          string: req.body.string,
+          integer: parseInt(req.body.integer),
+          float: parseFloat(req.body.float),
+          date: new Date(req.body.date),
+          boolean: JSON.parse(req.body.boolean)
+        }
       });
       console.log('Updated documents =>', updateResult);
       res.status(200).json(updateResult)

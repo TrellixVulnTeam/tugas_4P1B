@@ -21,7 +21,7 @@ async function main() {
 
 main().then((db) => {
   var indexRouter = require('./routes/index')(db);
-  var usersRouter = require('./routes/users');
+  var usersRouter = require('./routes/users')(db);
 
   var app = express();
 
@@ -140,4 +140,3 @@ main().then((db) => {
 }).catch((err) => {
   console.log("ini gagal connection", err)
 })
-
