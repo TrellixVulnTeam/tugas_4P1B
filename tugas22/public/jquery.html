@@ -56,7 +56,7 @@
                             <div class="col-md-10 relative">
                                 <label for="s-boolean" class="form-label">Sudah Menikah</label>
                                 <select id="s-boolean" name="s-boolean" class="form-select">
-                                    <option value="" disabled selected>Pilihan...</option>
+                                    <option disabled selected>Pilihan...</option>
                                     <option value="true">True</option>
                                     <option value="false">False</option>
                                 </select>
@@ -65,7 +65,7 @@
                             <hr>
                             <div class="container">
                                 <button type="submit" class=" btn btn-primary col-md-1 btn-sm">Search</button>
-                                <input type="reset" class="btn btn-warning btn-sm" value="Reset">
+                                <input type="reset" id="reset-search" class="btn btn-warning btn-sm" value="Reset">
                             </div>
                             <br>
                             <br>
@@ -141,7 +141,7 @@
                         <div class="card-footer">
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary btn-sm">Save</button>
-                                <input type="reset" class="btn btn-warning btn-sm" value="Reset">
+                                <input type="reset" id="reset-search-add" class="btn btn-warning btn-sm" value="Reset">
                             </div>
                         </div>
                     </form>
@@ -161,7 +161,7 @@
             dataType: "json"
         }).done(function (data) {
             let html = ''
-            console.log('ini data', typeof data)
+            // console.log('ini data', typeof data)
             data.forEach((item, index) => {
 
                 html += `
@@ -170,7 +170,7 @@
                     <td>${item.string}</td>
                     <td>${item.integer}</td>
                     <td>${item.float}</td>
-                    <td>${moment(item.date).format("yyyy MM dd")}</td>
+                    <td>${moment(item.date).format("DD MMMM YYYY")}</td>
                     <td>${item.boolean}</td>
                     <td>
                         <button type="button" class="btn btn-success btn-sm btn-edit" iddata="${item._id}">edit</button>
@@ -208,6 +208,7 @@
             }).done(function (data) {
                 console.log('data masuk', data)
                 readData()
+                $("#form-user").reset()
             })
         }
     }
@@ -223,8 +224,10 @@
             $('#integer').val(data.integer)
             $('#float').val(data.float)
             $('#date').val(data.date)
-            $('#boolean').val(data.boolean).prop('checked')
-        })      
+            $('#boolean').val(data.boolean)
+            // console.log(data.date)
+            $("#form-user").reset()
+        })
     }
 
 
@@ -277,6 +280,14 @@
             readData({ string, integer, float, startDate, endDate, boolean })
         })
 
+        $('#reset-search').click(function(){
+            readData()
+            $("#search-user").reset();
+        })
+        $('#reset-search-add').click(function(){
+            readData()
+            $("#form-user").reset();
+        })
     })
 
 </script>

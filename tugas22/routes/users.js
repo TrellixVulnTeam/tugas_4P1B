@@ -9,7 +9,7 @@ module.exports = function (db) {
 
     // search
 
-    // console.log(req.query)
+    console.log(req.query)
 
     const url = req.url == '/' ? '/?page=1&sortBy=id&sortMode=asc' : req.url
 
@@ -84,16 +84,16 @@ module.exports = function (db) {
 
     if (req.query.startDate && req.query.endDate) {
       searchParams['date'] = {
-        $gte: new Date(req.query.startDate),
-        $lt: new Date(req.query.endDate)
+        $gte: (req.query.startDate),
+        $lt: (req.query.endDate)
       }
     } else if (req.query.startDate) {
       searchParams['date'] = {
-        $gte: new Date(req.query.startDate)
+        $gte: (req.query.startDate)
       }
     } else if(req.query.endDate) {
       searchParams['date'] = {
-        $lt: new Date(req.query.endDate)
+        $lt: (req.query.endDate)
       }
     }
 
@@ -125,8 +125,8 @@ module.exports = function (db) {
           string: req.body.string,
           integer: parseInt(req.body.integer),
           float: parseFloat(req.body.float),
-          date: new Date(req.body.date),
-          boolean: JSON.parse(req.body.boolean)
+          date: (req.body.date),
+          boolean: (req.body.boolean)
         }
       )
       const user = await collection.findOne({ _id: document.insertedId })
@@ -173,8 +173,8 @@ module.exports = function (db) {
           string: req.body.string,
           integer: parseInt(req.body.integer),
           float: parseFloat(req.body.float),
-          date: new Date(req.body.date),
-          boolean: JSON.parse(req.body.boolean)
+          date: (req.body.date),
+          boolean: (req.body.boolean)
         }
       });
       console.log('Updated documents =>', updateResult);
