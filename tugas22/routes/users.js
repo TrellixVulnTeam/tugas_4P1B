@@ -9,14 +9,13 @@ module.exports = function (db) {
 
     // search
 
-    console.log(req.query)
+    // console.log(req.query)
 
     const url = req.url == '/' ? '/?page=1&sortBy=id&sortMode=asc' : req.url
 
     const page = req.query.page || 1
-    const limit = 9
+    const limit = 3
     const offset = (page - 1) * limit
-    const searchParams = {}
     let sortBy = {}
 
 
@@ -66,53 +65,53 @@ module.exports = function (db) {
       }
     }
 
+    const {string, integer, float, startDate, endDate, boolean} = req.query
+    const params = {}
 
 
-
-    if (req.query.string) {
-      const subject = new RegExp(`${req.query.string}`, 'i');
-      searchParams['string'] = subject
+    if (string) {
+      params['string'] = new RegExp(`${string}`, 'i');
     }
 
-    if (req.query.integer) {
-      searchParams['integer'] = parseInt(req.query.integer)
+    if (integer) {
+      params['integer'] = parseInt(integer)
     }
 
-    if (req.query.float) {
-      searchParams['float'] = parseFloat(req.query.float)
+    if (float) {
+      params['float'] = parseFloat(float)
     }
 
-    if (req.query.startDate && req.query.endDate) {
-      searchParams['date'] = {
-        $gte: (req.query.startDate),
-        $lt: (req.query.endDate)
+    if (startDate && endDate) {
+      params['date'] = {
+        $gte: (startDate),
+        $lt: (endDate)
       }
-    } else if (req.query.startDate) {
-      searchParams['date'] = {
-        $gte: (req.query.startDate)
+    } else if (startDate) {
+      params['date'] = {
+        $gte: (startDate)
       }
-    } else if(req.query.endDate) {
-      searchParams['date'] = {
-        $lt: (req.query.endDate)
+    } else if(endDate) {
+      params['date'] = {
+        $lt: (endDate)
       }
     }
 
-    if (req.query.boolean) {
-      searchParams['boolean'] = JSON.parse(req.query.boolean)
+    if (boolean) {
+      params['boolean'] = JSON.parse(boolean)
     }
 
 
-    console.log(searchParams)
+    // console.log(params)
 
     try {
-      const pageResult = await collection.countDocuments(searchParams);
+      const pageResult = await collection.countDocuments(params);
       // console.log(pageResult)
       const pages = Math.ceil(pageResult / limit)
-      const findResult = await collection.find(searchParams).collation({ locale: "en" }).sort(sortBy).limit(limit).skip(offset).toArray();
-      res.status(200).json(findResult, searchParams, req, page, pages)
+      const findResult = await collection.find(params).sort(sortBy).limit(limit).skip(offset).toArray();
+      res.status(200).json({ findResult,page: parseInt(page), pages: pages, offset })
     } catch (e) {
-      console.log(e)
-      res.json(e)
+      // console.log(e)
+      res.status(500).json({ message: "error ambil data", err })
     }
   });
 
@@ -132,8 +131,8 @@ module.exports = function (db) {
       const user = await collection.findOne({ _id: document.insertedId })
       res.status(200).json(user)
     } catch (e) {
-      console.log(e)
-      res.json(e)
+      // console.log(e)
+      res.status(500).json({ message: "error ambil data", err })
     }
   });
 
@@ -159,7 +158,7 @@ module.exports = function (db) {
       const user = await collection.findOne({ _id: new ObjectID(`${req.params.id}`) })
       res.status(200).json(user)
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       res.status(500).json({ message: "error update data" })
     }
   });
@@ -177,11 +176,11 @@ module.exports = function (db) {
           boolean: (req.body.boolean)
         }
       });
-      console.log('Updated documents =>', updateResult);
+      // console.log('Updated documents =>', updateResult);
       res.status(200).json(updateResult)
     } catch (e) {
       // console.log(e)
-      res.json(e)
+      res.status(500).json({ message: "error ambil data", err })
     }
   });
 

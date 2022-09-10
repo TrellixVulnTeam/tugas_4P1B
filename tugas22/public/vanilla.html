@@ -15,6 +15,23 @@
             position: relative;
             left: 80px;
         }
+
+        ul {
+            height: 50px;
+            padding: 0px 5px;
+            width: auto;
+            float: right;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        ul li {
+            list-style: none;
+            padding: 5px 10px;
+            font-weight: bold;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 
@@ -25,7 +42,8 @@
                 <div class="card-header">
                     <h1>Daftar User</h1>
                 </div>
-                <div class="card-body" style="background-image: url(https://img.freepik.com/free-vector/elegant-white-background-with-shiny-lines_1017-17580.jpg?w=2000)">
+                <div class="card-body"
+                    style="background-image: url(https://img.freepik.com/free-vector/elegant-white-background-with-shiny-lines_1017-17580.jpg?w=2000)">
                     <div class="container">
                         <form class="row g-3">
                             <div class="col-md-10 relative">
@@ -86,6 +104,10 @@
 
                     </tbody>
                 </table>
+                <div class="col-6">
+                    <nav aria-label="Page navigation" id="pagination">
+                    </nav>
+                </div>
             </div>
         </div>
     </form>
@@ -100,7 +122,8 @@
                 <div class="card-header">
                     <h1>Form User</h1>
                 </div>
-                <div class="card-body" style="background-image: url(https://img.freepik.com/free-vector/elegant-white-background-with-shiny-lines_1017-17580.jpg?w=2000)">
+                <div class="card-body"
+                    style="background-image: url(https://img.freepik.com/free-vector/elegant-white-background-with-shiny-lines_1017-17580.jpg?w=2000)">
                     <form class="row g-3">
                         <div class="col-md-12">
                             <label for="string" class="form-label">Nama</label>
@@ -149,7 +172,11 @@
 </body>
 
 <script>
-    const readData = (params) => {
+
+let params ={
+        page : 1
+    }
+    const readData = () => {
         console.log('kebaca', params)
         fetch(`http://localhost:3000/users?${new URLSearchParams(params).toString()}`).then((response) => {
             if (!response.ok) {
@@ -158,14 +185,14 @@
 
             return response.json();
 
-        }).then((data) => {
+        }).then(({findResult, page, pages, offset}) => {
             let html = ''
             // console.log('ini data', data)
-            data.forEach((item, index) => {
+            findResult.forEach((item, index) => {
 
                 html += `
                 <tr>
-                    <td>${index + 1}</td>
+                    <td>${(offset + index) + 1}</td>
                     <td>${item.string}</td>
                     <td>${item.integer}</td>
                     <td>${item.float}</td>
@@ -179,6 +206,7 @@
             `
             });
             document.querySelector('table tbody').innerHTML = html
+            paginations(page, pages)
         });
     }
     const saveData = (id, string, integer, float, date, boolean) => {
@@ -306,10 +334,40 @@
         const startDate = document.getElementById('start-date').value
         const endDate = document.getElementById('end-date').value
         const boolean = document.getElementById('s-boolean').value
+        params = {...params, string, integer, float, startDate, endDate, boolean, page: 1}
         console.log(string, integer, float, startDate, endDate)
-        readData({ string, integer, float, startDate, endDate, boolean })
+        readData()
     })
 
+
+    const changePage = (page) => {
+        console.log('ke eksekusi', page)
+        params.page = page
+        readData()
+    }
+
+
+
+   const paginations = (page, pages) =>
+   {
+        let html = `<ul class="pagination">
+                               <li class="page-item ${page == 1 ? ' disabled' : ''}">
+                                 <a class="page-link" href="javascript:void(0)" aria-label="Previous" onclick="changePage(${page -1})">
+                                  <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>`
+        for (let i = 1; i <= pages; i++) {
+        html += `
+        <li class="page-item ${i == page ? ' active' : ''}"><a class="page-link" href="javascript:void(0)" onclick="changePage(${i})">${i}</a></li>`
+        }
+        html += `<li class="page-item ${page == pages ? ' disabled' : ''}">
+            <a class="page-link" href="javascript:void(0)" aria-label="Next" onclick="changePage(${page + 1})">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>`
+    document.getElementById('pagination').innerHTML = html
+    }
 
 </script>
 

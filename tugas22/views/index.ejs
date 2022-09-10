@@ -94,8 +94,8 @@
               href="<%= url.replace(`sortBy=${req.query.sortBy}`, 'sortBy=integer').replace(`sortMode=${req.query.sortMode}`, `sortMode=${req.query.sortMode == 'asc' ? 'desc' : 'asc' }`) %>">
               <i
                 class="fa-solid fa-<%= req.query.sortBy == 'integer' ? req.query.sortMode == 'asc' ? 'sort-up' : 'sort-down' : 'sort' %>"></i>
-              Integer
-          </th></a>
+              Integer</a>
+          </th>
 
 
           <th>

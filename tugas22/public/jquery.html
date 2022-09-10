@@ -88,6 +88,10 @@
 
                     </tbody>
                 </table>
+                <div class="col-6">
+                    <nav aria-label="Page navigation" id="pagination">
+                    </nav>
+                </div>
             </div>
         </div>
     </form>
@@ -152,21 +156,23 @@
 </body>
 
 <script>
-    const readData = (params) => {
-        // console.log('kebaca', params)
+    let params ={
+        page : 1
+    }
+    const readData = () => {
         $.ajax({
             method: "GET",
             url: "http://localhost:3000/users",
             data: params,
             dataType: "json"
-        }).done(function (data) {
+        }).done(function ({findResult, page, pages, offset}) {
             let html = ''
-            // console.log('ini data', typeof data)
-            data.forEach((item, index) => {
+            // console.log('ini data', {findResult, page, pages, offset})
+            findResult.forEach((item, index) => {
 
                 html += `
                 <tr>
-                    <td>${index + 1}</td>
+                    <td>${(offset + index) + 1}</td>
                     <td>${item.string}</td>
                     <td>${item.integer}</td>
                     <td>${item.float}</td>
@@ -180,6 +186,7 @@
             `
             });
             $('table tbody').html(html)
+            paginations(page, pages)
         }).fail(function (err) {
             alert('gagal pake jquery')
         })
@@ -198,7 +205,7 @@
                 readData()
                 $('#id').val('')
 
-            }).catch(e => console.log(e))
+            })//.catch(e => console.log(e))
         } else {
             $.ajax({
                 method: "POST",
@@ -206,7 +213,7 @@
                 data: { string, integer, float, date, boolean },
                 dataType: "json"
             }).done(function (data) {
-                console.log('data masuk', data)
+                // console.log('data masuk', data)
                 readData()
                 $("#form-user").reset()
             })
@@ -233,10 +240,10 @@
 
     const deleteData = (id) => {
         $.ajax({
-                method: "DELETE",
-                url: `http://localhost:3000/users/${id}`,
-                dataType: "json"
-            }).done(function (data) {
+            method: "DELETE",
+            url: `http://localhost:3000/users/${id}`,
+            dataType: "json"
+        }).done(function (data) {
             readData()
         })
     }
@@ -257,18 +264,18 @@
             saveData(id, string, integer, float, date, boolean)
         })
 
-        $('table tbody').on('click', '.btn-edit', function(){
+        $('table tbody').on('click', '.btn-edit', function () {
             const id = $(this).attr('iddata')
             editData(id)
         })
 
-        $('table tbody').on('click', '.btn-delete', function(){
+        $('table tbody').on('click', '.btn-delete', function () {
             const id = $(this).attr('iddatas')
             deleteData(id)
         })
 
 
-        $('#search-user').submit ( function (event) {
+        $('#search-user').submit(function (event) {
             event.preventDefault()
             const string = $('#strings').val()
             const integer = $('#integers').val()
@@ -276,19 +283,50 @@
             const startDate = $('#start-date').val()
             const endDate = $('#end-date').val()
             const boolean = $('#s-boolean').val()
-            console.log(string, integer, float, startDate, endDate)
-            readData({ string, integer, float, startDate, endDate, boolean })
+            params = {...params, string, integer, float, startDate, endDate, boolean, page: 1}
+            // console.log( params ,string, integer, float, startDate, endDate)
+            readData()
         })
 
-        $('#reset-search').click(function(){
-            readData()
+        $('#reset-search').click(function () {
             $("#search-user").reset();
-        })
-        $('#reset-search-add').click(function(){
             readData()
+        })
+        $('#reset-search-add').click(function () {
             $("#form-user").reset();
+            readData()
         })
     })
+
+    const changePage = (page) => {
+        // console.log('ke eksekusi', page)
+        params.page = page
+        readData()
+    }
+
+
+
+   const paginations = (page, pages) =>
+   {
+        let html = `<ul class="pagination">
+                               <li class="page-item ${page == 1 ? ' disabled' : ''}">
+                                 <a class="page-link" href="javascript:void(0)" aria-label="Previous" onclick="changePage(${page -1})">
+                                  <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>`
+        for (let i = 1; i <= pages; i++) {
+        html += `
+        <li class="page-item ${i == page ? ' active' : ''}"><a class="page-link" href="javascript:void(0)" onclick="changePage(${i})">${i}</a></li>`
+        }
+        html += `<li class="page-item ${page == pages ? ' disabled' : ''}">
+            <a class="page-link" href="javascript:void(0)" aria-label="Next" onclick="changePage(${page + 1})">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>`
+    $('#pagination').html(html)
+    }
+
 
 </script>
 
