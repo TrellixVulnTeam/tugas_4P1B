@@ -35,5 +35,15 @@ module.exports = function (db) {
         }
     })
 
+    router.post('/start', async function (req, res) {
+        try {
+            const { rows } = await db.query('INSERT INTO penjualan(total_harga) VALUES(0) returning *')
+            res.json(rows[0])
+        }
+        catch {
+            res.send(e)
+        }
+    })
+
     return router;
 }

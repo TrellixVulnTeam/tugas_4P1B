@@ -5,7 +5,7 @@
             <h1>Transaksi Baru</h1>
         </div>
         <div class="card-body">
-            <form class="row g-3">
+            <form id="form-add-transaksi" class="row g-3">
                 <div class="col-md-6">
                     <label for="no_invoice" class="form-label">No. Invoice</label>
                     <input type="text" class="form-control" id="no_invoice" readonly>
@@ -20,7 +20,7 @@
             </form>
         </div>
         <hr>
-        <form class="row g-3">
+        <form id="detail-form" class="row g-3">
             <div class="col-md-6">
                 <label for="id_barang" class="form-label">Kode Barang</label>
                 <select name="id_barang" id="id_barang" class="form-control">
@@ -110,5 +110,21 @@
     </div>
     </div>
 
+    <script>
+        let no_invoice = null;
+        $(document).ready(function(){
+            $('#detail-form').prop("disabled", true);
+            $('#form-add-transaksi').submit(function(e){
+                e.preventDefault();
+                $.post('/penjualan/start').done(function(data){
+                    no_invoice = data.no_invoice;
+                    $('#no_invoice').val(no_invoice)
+                    $('#date').val(data.date)
+                    $('#form-add-transaksi').prop("disabled", true);
+                    $('#detail-form').prop("disabled", false);
+                })
+            })
+        })
+    </script>
 
     <%- include('../partial/footer') %>
