@@ -61,10 +61,12 @@ module.exports = function (db) {
 
     router.post('/additem', async function (req, res) {
         try {
-            const { rows } = await db.query('INSERT INTO detail_penjualan(no_invoice, id_barang, qty)VALUES ($1, $2, $3) returnig *', [req.body.no_invoice, req.body.id_barang, req.body.qty]);
+            const { rows } = await db.query('INSERT INTO detail_penjualan(no_invoice, id_barang, qty)VALUES ($1, $2, $3) returning *', [req.body.no_invoice, req.body.id_barang, req.body.qty]);
+            console.log(rows)
             res.json(rows[0])
         }
         catch(e) {
+            console.log(e)
             res.send(e)
         }
     })
@@ -72,9 +74,11 @@ module.exports = function (db) {
     router.get('/details/:no_invoice', async function (req, res) {
         try {
             const {rows} = await db.query('SELECT dp.*, b.nama_barang FROM detail_penjualan as dp LEFT JOIN barang as b ON dp.id_barang = b.id_barang WHERE dp.no_invoice = $1 ORDER BY dp.id_detail', [req.params.no_invoice]);
+            // console.log(rows)
             res.json(rows)
         }
         catch(e) {
+            // console.log(e)
             res.send(e)
         }
     })

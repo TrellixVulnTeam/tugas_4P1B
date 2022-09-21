@@ -123,13 +123,15 @@
                 e.preventDefault();
                 const id_barang = $('#id_barang').val()
                 const qty = $('#qty').val()
-                $.post('/penjualan/additem',{no_invoice, id_barang, qty}).done(function (data) {
+                console.log(id_barang, qty)
+                $.post('/penjualan/additem', {no_invoice, id_barang, qty}).done(function (data) {
                     readDetails()
                 })
             })
         })
         const readDetails = () => {
             $.get(`/penjualan/details/${no_invoice}`).done(function(data){
+                console.log(data)
                 let html = ''
                 data.forEach((item, index) => {
                     html += `
