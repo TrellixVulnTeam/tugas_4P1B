@@ -61,7 +61,8 @@ module.exports = function (db) {
 
     router.post('/additem', async function (req, res) {
         try {
-            const { rows } = await db.query('INSERT INTO detail_penjualan(no_invoice, id_barang, qty)VALUES ($1, $2, $3) returning *', [req.body.no_invoice, req.body.id_barang, req.body.qty]);
+            const detail = await db.query('INSERT INTO detail_penjualan(no_invoice, id_barang, qty)VALUES ($1, $2, $3) returning *', [req.body.no_invoice, req.body.id_barang, req.body.qty]);
+            const { rows } = await db.query('SELECT * FROM penjualan WHERE no_invoice = $1', [req.body.no_invoice])
             console.log(rows)
             res.json(rows[0])
         }

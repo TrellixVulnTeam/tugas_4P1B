@@ -66,6 +66,7 @@
                         <th>Qty</th>
                         <th>Harga Jual</th>
                         <th>Total Harga</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,7 +80,7 @@
             <div class="row mb-3">
                 <label for="total_harga" class="col-sm-2 col-form-label">Total Harga</label>
                 <div class="col-sm-10">
-                    <input type="text" class="form-control" id="total_harga">
+                    <input type="text" class="form-control" id="total_harga" value="<%= penjualan.total_harga%>" readonly>
                 </div>
             </div>
             <div class="row mb-3">
@@ -119,6 +120,13 @@
                 const harga_jual = $('#harga_jual').val()
                 $('#total_harga_item').val(harga_jual * qty)
             })
+
+            $('#total_bayar').keyup(function () {
+                const total_bayar = $(this).val()
+                const total_harga = $('#total_harga').val()
+                $('#kembalian').val(currencyFormatter.format(total_bayar - total_harga))
+            })
+
             $('#detail-form').submit(function (e) {
                 e.preventDefault();
                 const id_barang = $('#id_barang').val()
@@ -126,6 +134,7 @@
                 console.log(id_barang, qty)
                 $.post('/penjualan/additem', {no_invoice, id_barang, qty}).done(function (data) {
                     readDetails()
+                    $('#total_harga').val(currencyFormatter.format(data.total_harga))
                 })
             })
         })
