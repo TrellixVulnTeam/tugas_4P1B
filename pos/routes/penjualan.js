@@ -84,5 +84,16 @@ module.exports = function (db) {
         }
     })
 
+    router.get('/delete/:no_invoice', async function (req, res) {
+        try {
+            const { rows } = await db.query('DELETE FROM penjualan WHERE no_invoice = $1', [req.params.no_invoice])
+            delPen = await db.query('DELETE FROM penjualan_detail WHERE no_invoice = $1', [req.params.no_invoice])
+            res.redirect('/penjualan')
+        } catch (e) {
+            console.log(e)
+            res.render(e)
+        }
+    })
     return router;
 }
+
